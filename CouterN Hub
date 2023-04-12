@@ -1,0 +1,163 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/vozoid/ui-libraries/main/drawing/void/source.lua"))()
+
+local watermark = library:Watermark("Wannabe Hub | v.1 | ESAN")
+
+local main = library:Load{
+    Name = "CouterN Hub | [NEW] Classroom Simulator",
+    SizeX = 600,
+    SizeY = 650,
+    Theme = "Midnight",
+    Extension = "json", -- config file extension
+    Folder = "vozoid ui or something" -- config folder name
+}
+
+-- values
+_G.autoCollect= true
+_G.autoProcess = true
+_G.auto1Student = true
+_G.auto5Student = true
+_G.autoRate = true
+
+--Func
+function autoCollect()
+    while _G.autoCollect == true do
+        game:GetService("ReplicatedStorage").Remotes.Gameplay.DropEvent:FireServer(1)
+        wait(.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+    end
+end
+
+function autoProcess()
+    while _G.autoProcess == true do
+        game:GetService("ReplicatedStorage").Remotes.Gameplay.ProcessEvent:FireServer()
+        wait(.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+    end
+end
+
+function auto1Student()
+    while _G.auto1Student == true do
+        game:GetService("ReplicatedStorage").Remotes.Gameplay.AddDropperEvent:FireServer()
+        wait(.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+    end
+end
+
+function auto5Student()
+    while _G.auto5Student == true do
+        game:GetService("ReplicatedStorage").Remotes.Gameplay.AddDropper5Event:FireServer()
+        wait(.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+    end
+end
+
+function autoRate()
+    while _G.autoRate == true do
+        game:GetService("ReplicatedStorage").Remotes.Gameplay.RateUpEvent:FireServer()
+        wait(.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+    end
+end
+
+
+local tab = main:Tab("Main Page")
+
+local section = tab:Section{
+    Name = "Auto Farm",
+    Side = "Left"
+}
+
+local plrsection = tab:Section{
+    Name = "Player",
+    Side = "Right"
+}
+
+plrsection:Slider{
+    Text = "Walk Speed [value]/250",
+    --Default = 5,
+    Min = 16,
+    Max = 250,
+    Float = 1,
+    Flag = "WS",
+    Callback = function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+}
+
+
+local toggle = section:Toggle{
+    Name = "Auto Collect (Lag)",
+    Flag = "Toggle 1",
+    --Default = true,
+    Callback  = function(Value)
+        _G.autoCollect = Value
+        autoCollect()
+    end
+}
+
+local toggle = section:Toggle{
+    Name = "Auto Process (Lag)",
+    Flag = "Toggle 1",
+    --Default = true,
+    Callback  = function(Value)
+        _G.autoProcess = Value
+        autoProcess()
+    end
+}
+
+section:Button{
+    Name = "Process Books",
+    Callback  = function()
+        game:GetService("ReplicatedStorage").Remotes.Gameplay.ProcessEvent:FireServer()
+    end
+}
+
+local toggle = section:Toggle{
+    Name = "Auto +1 Student",
+    Flag = "Toggle 1",
+    --Default = true,
+    Callback  = function(Value)
+        _G.auto1Student = Value
+        auto1Student()
+    end
+}
+
+local toggle = section:Toggle{
+    Name = "Auto +5 Student",
+    Flag = "Toggle 1",
+    --Default = true,
+    Callback  = function(Value)
+        _G.auto5Student = Value
+        auto5Student()
+    end
+}
+
+local toggle = section:Toggle{
+    Name = "Auto + Rate",
+    Flag = "Toggle 1",
+    --Default = true,
+    Callback  = function(Value)
+        _G.autoRate = Value
+        autoRate()
+    end
+}
+
+plrsection:Keybind{
+    Name = "UI Toggle",
+    Flag = "UI Toggle",
+    Default = Enum.KeyCode.RightControl,
+    Blacklist = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2, Enum.UserInputType.MouseButton3},
+    Callback = function(_, fromsetting)
+        if not fromsetting then
+            library:Close()
+        end
+    end
+}
+
+plrsection:Keybind{
+    Name = "Destroy UI",
+    Flag = "Unload UI",
+    Default = Enum.KeyCode.B,
+    Blacklist = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2, Enum.UserInputType.MouseButton3},
+    Callback = function(_, fromsetting)
+        if not fromsetting then
+            library:Unload()
+        end
+    end
+}
+
